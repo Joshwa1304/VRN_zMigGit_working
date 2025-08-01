@@ -108,7 +108,7 @@ public class TransformGitService {
             while (cursor.hasNext()) {
                 String s = cursor.next();
                 Bson filter = eq("system", s);
-                String Syspath = basePath + "\\" + s;
+                String Syspath = basePath + "\\" + "Sys_" + s;
                 FolderStructureCreation(Syspath);
 
                 cursor1 = subSysCollection.distinct("subsystem", Filters.and(filter, filtercombo), String.class)
@@ -117,7 +117,7 @@ public class TransformGitService {
                 while (cursor1.hasNext()) {
                     String o = cursor1.next();
                     Bson filter1 = eq("subsys", o);
-                    String Subsyspath = basePath + "\\" + s + "\\" + o;
+                    String Subsyspath = basePath + "\\" + "Sys_" + s + "\\" + "SubSys_" + o;
                     FolderStructureCreation(Subsyspath);
 
                     cursor2 = eleMasterCollection.find(Filters.and(filter, filter1, filtercombo))
@@ -130,7 +130,7 @@ public class TransformGitService {
                         String type = objType.toString().trim();
                         Bson filter2 = eq("element", element);
                         System.out.println("\n\n" + element + type);
-                        String path = basePath + "/" + s + "/" + o + "/" + type;
+                        String path = basePath + "/" + "Sys_" + s + "/" + "SubSys_" + o + "/" + type;
                         FolderStructureCreation(path);
 
                         cursor3 = eleContentCollection.find(filter2).projection(EleContentFields).sort(ascending("_id"))
