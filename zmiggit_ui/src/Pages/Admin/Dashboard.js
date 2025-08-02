@@ -4,15 +4,22 @@ import { MdOutlineSlowMotionVideo, MdDeleteSweep } from "react-icons/md";
 import { FaFileUpload, FaDatabase, FaCheckCircle } from "react-icons/fa";
 import { TbArrowsTransferUp } from "react-icons/tb";
 import { VscSymbolMisc } from "react-icons/vsc";
+import { HiMenu } from "react-icons/hi";
 import Source from "../components/Source";
 import ExtractSection from "../components/Extract";
 import LoadSection from "../components/Load";
+import Mapping from "../components/Mapping";
+import Transform from "../components/Transform";
+import Refresh from "../components/Refresh";
+import ValidateSection from "../components/Validate";
 
 function Dashboard() {
   const navigate = useNavigate();
   const [selectedSection, setSelectedSection] = useState("welcome");
   const [selectedFile, setSelectedFile] = useState(null);
   const [loadedToDB, setLoadedToDB] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // for mobile
+
   const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
   const handleLoadToMongo = async () => {
     if (!selectedFile) return alert("Please select a file first.");
@@ -36,7 +43,12 @@ function Dashboard() {
     });
   };
 
-
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [transformOutput, setTransformOutput] = useState('');
+  const [fileUploaded, setFileUploaded] = useState(false);
+  const [transformed, setTransformed] = useState(false);
+  const [platform, setPlatform] = useState('');
 
   const navItems = [
     { key: "source", label: "SCM Source", icon: <MdOutlineSlowMotionVideo /> },
@@ -55,7 +67,7 @@ function Dashboard() {
         <h1 className="text-3xl md:text-5xl font-bold text-center">
           VRN zMigGIT
         </h1>
-        <nav className="absolute top-6 right-6">
+        <nav className="absolute top-6 right-6 flex gap-4 items-center">
           <ul className="text-sm md:text-base font-semibold">
             <li
               className="hover:text-[#67c02b] cursor-pointer"
@@ -66,11 +78,13 @@ function Dashboard() {
           </ul>
         </nav>
       </header>
-
-      {/* Main Content */}
+      {/* Mobile Menu Icon */}
+      <div className="md:hidden cursor-pointer" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+        <HiMenu className="text-2xl" />
+      </div>
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <aside className="m-10 flex-2">
+        {/* Sidebar for Desktop */}
+        <aside className="m-10 hidden md:block flex-2">
           <div className="flex flex-col justify-around h-full">
             {navItems.map((item, index) => (
               <button
@@ -84,7 +98,25 @@ function Dashboard() {
           </div>
         </aside>
 
-
+        {/* Sidebar for Mobile */}
+        {mobileMenuOpen && (
+          <aside className="fixed z-50 top-20 left-4 right-4 bg-[#262626] text-white rounded-xl shadow-lg p-4 md:hidden">
+            <div className="flex flex-col gap-3">
+              {navItems.map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSelectedSection(item.key);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#555] rounded-lg text-sm"
+                >
+                  {item.icon} {item.label}
+                </button>
+              ))}
+            </div>
+          </aside>
+        )}
 
         {/* Main Section */}
         <main className="flex-1 bg-white p-6 overflow-y-auto shadow-lg rounded-md mt-10 mb-10 ml-10 mr-10">
@@ -99,9 +131,7 @@ function Dashboard() {
                 </p>
               </div>
             )}
-
             {selectedSection === "source" && <Source />}
-
             {selectedSection === "extract" && (
               <div className="w-full flex justify-center items-center">
                 <ExtractSection
@@ -110,7 +140,6 @@ function Dashboard() {
                 />
               </div>
             )}
-
             {selectedSection === "loaddb" && (
               <LoadSection
                 selectedFile={selectedFile}
@@ -119,7 +148,24 @@ function Dashboard() {
                 setLoadedToDB={setLoadedToDB}
               />
             )}
-
+            {selectedSection === "mapping" && <Mapping />}
+            {selectedSection === "transform" && (
+              <Transform
+                setLoading={setLoading}
+                setSuccess={setSuccess}
+                setTransformOutput={setTransformOutput}
+              />
+            )}
+            {selectedSection === "cleanup" && (
+              <Refresh
+                setFileUploaded={setFileUploaded}
+                setLoadedToDB={setLoadedToDB}
+                setTransformed={setTransformed}
+                setSelectedFile={setSelectedFile}
+                setPlatform={setPlatform}
+              />
+            )}
+            {selectedSection === "validate" && <ValidateSection />}
           </div>
         </main>
       </div>

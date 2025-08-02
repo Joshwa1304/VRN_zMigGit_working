@@ -30,7 +30,7 @@ public class CleanupTransformController {
     @GetMapping("/folder-structure")
     public String detectSubFolder() throws IOException {
 
-        String folderPath = basePath + "\\TRAINING";
+        String folderPath = basePath + "\\Sys_TRAINING";
 
         File baseFolder = new File(folderPath);
 
