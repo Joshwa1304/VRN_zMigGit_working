@@ -14,19 +14,19 @@ function LoadSection({ selectedFile, onLoadMongo, onLoadDB2, setLoadedToDB }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDB, selectedFile]);
-
   const handleLoad = async (db) => {
     setLoading(true);
     setProgress(0);
     setBackendMessage('');
 
+    let currentProgress = 0;
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + 10;
-        if (next >= 90) clearInterval(interval);
-        return next;
-      });
-    }, 300);
+      currentProgress += 5;
+      setProgress(currentProgress);
+      if (currentProgress >= 90) {
+        clearInterval(interval); // Stop before 100%, wait for backend
+      }
+    }, 200); // animation speed
 
     try {
       let response;
@@ -51,18 +51,21 @@ function LoadSection({ selectedFile, onLoadMongo, onLoadDB2, setLoadedToDB }) {
       console.error("Upload error:", error);
       setBackendMessage("🚫 Error while uploading.");
     } finally {
-      clearInterval(interval);
-      setProgress(100);
-      setLoading(false);
+      // Wait briefly to simulate progress completion
+      setTimeout(() => {
+        setProgress(100);
+        setLoading(false);
+      }, 500); // adjust delay if needed
     }
   };
+
 
   const handleDBSelect = (db) => {
     setSelectedDB(db);
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center mt-10">
+    <div className="flex flex-col items-center p-8 bg-gray-100 rounded-xl shadow-lg w-full max-w-4xl mx-auto">
       {!selectedDB ? (
         <div className="flex flex-col md:flex-row gap-4">
           <button
@@ -83,19 +86,19 @@ function LoadSection({ selectedFile, onLoadMongo, onLoadDB2, setLoadedToDB }) {
       ) : (
         <>
           {loading ? (
-            <div className="w-full max-w-md mt-8">
-              <div className="w-full bg-gray-200 rounded-full h-5 overflow-hidden">
+            <>
+              <div className="w-3/4 bg-gray-300 h-4 rounded-full overflow-hidden mb-4">
                 <div
-                  className="bg-blue-600 h-full transition-all duration-300"
+                  className="bg-[#555] h-4 transition-all duration-300 ease-linear"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
-              <p className="text-center mt-3 font-medium text-gray-700">
+              <p className="text-gray-800 font-medium">
                 Uploading to <span className="uppercase">{selectedDB}</span>... ({progress}%)
               </p>
-            </div>
+            </>
           ) : (
-            <p className="mt-6 text-lg font-semibold text-green-700 text-center">
+            <p className="text-green-700 font-semibold text-center bg-green-100 px-6 py-3 rounded-lg">
               {backendMessage}
             </p>
           )}
