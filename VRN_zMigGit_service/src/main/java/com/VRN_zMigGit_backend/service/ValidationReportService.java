@@ -160,7 +160,7 @@ public class ValidationReportService {
             bw.newLine();
             bw.write("<table>");
             bw.write(
-                    "<thead><tr><th>System</th><th>Subsystem</th><th>Type</th><th>Source Count</th><th>Target Count</th></tr></thead>");
+                    "<thead><tr><th>System</th><th>Subsystem</th><th>Type</th><th>Source Count</th><th>Local Count</th></tr></thead>");
             bw.write("<tbody>");
             bw.newLine();
 
