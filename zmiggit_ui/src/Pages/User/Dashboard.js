@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { TbArrowsTransferUp } from "react-icons/tb";
 import { VscSymbolMisc } from "react-icons/vsc";
 import { HiMenu } from "react-icons/hi";
 import { TiArrowRightThick } from "react-icons/ti";
+
 
 import Mapping from "../components/Mapping";
 import Transform from "../components/Transform";
@@ -13,54 +14,35 @@ import ValidateSection from "../components/Validate";
 function Dashboard() {
     const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState("welcome");
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [loadedToDB, setLoadedToDB] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // for mobile
-
-    const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
-    const handleLoadToMongo = async () => {
-        if (!selectedFile) return alert("Please select a file first.");
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        return await fetch("http://localhost:9090/extract", {
-            method: "POST",
-            body: formData,
-        });
-    };
-
-    const handleLoadToDB2 = async () => {
-        if (!selectedFile) return alert("Please select a file first.");
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        return await fetch("http://localhost:9090/", {
-            method: "POST",
-            body: formData,
-        });
-    };
-
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [transformOutput, setTransformOutput] = useState('');
-    const [fileUploaded, setFileUploaded] = useState(false);
-    const [transformed, setTransformed] = useState(false);
-    const [platform, setPlatform] = useState('');
+    { selectedSection === "transform" && <Transform setLoading={setLoading} /> }
+
 
     const navItems = [
         { key: "mapping", label: "Mapping", icon: <VscSymbolMisc /> },
         { key: "transform", label: "Transform", icon: <TbArrowsTransferUp /> },
         { key: "validate", label: "Validate & Report", icon: <FaCheckCircle /> },
     ];
+    const [username, setUsername] = useState("");
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
 
     return (
         <div className="min-h-screen flex flex-col font-[Poppins]">
             {/* Header */}
             <header className="bg-[#840227] text-white px-6 py-4 shadow-md relative">
                 <h1 className="text-3xl md:text-5xl font-bold text-center">
-                    VRN zMigGIT
+                    VRX zMigGIT
                 </h1>
                 <nav className="absolute top-6 right-6 flex gap-4 items-center">
+                    <a className="mr-3">{username}</a>
                     <ul className="text-sm md:text-base font-semibold">
                         <li
                             className="hover:text-[#67c02b] cursor-pointer"
@@ -71,23 +53,28 @@ function Dashboard() {
                     </ul>
                 </nav>
             </header>
+
             {/* Mobile Menu Icon */}
-            <div className="md:hidden cursor-pointer" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <div className="md:hidden cursor-pointer px-6 py-4" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                 <HiMenu className="text-2xl" />
             </div>
+
             <div className="flex flex-1 overflow-hidden">
-                <aside className="m-10 hidden md:flex flex-col items-start justify-center gap-9 flex-2">
+                {/* Sidebar for Desktop */}
+                <aside className="m-10 hidden md:flex flex-col items-start justify-center gap-6 flex-2">
                     {navItems.map((item, index) => (
-                        <>
+                        <div key={index} className="flex items-center w-64">
                             <button
-                                key={index}
                                 onClick={() => setSelectedSection(item.key)}
-                                className="w-full flex items-center gap-3 px-4 py-3 bg-[#262626] hover:bg-[#555] rounded-lg text-white text-sm sm:text-base transition duration-200"
+                                className={`w-full flex items-center gap-3 px-4 py-3 bg-[#262626] hover:bg-[#555] rounded-lg text-white ${selectedSection === item.key ? "font-semibold" : ""
+                                    }`}
                             >
                                 {item.icon} {item.label}
-                            </button><TiArrowRightThick />
-                        </>
-
+                            </button>
+                            {selectedSection === item.key && (
+                                <TiArrowRightThick className="text-green-500 text-5xl" />
+                            )}
+                        </div>
                     ))}
                 </aside>
 
@@ -95,7 +82,7 @@ function Dashboard() {
                 {/* Sidebar for Mobile */}
                 {mobileMenuOpen && (
                     <aside className="fixed z-50 top-20 left-4 right-4 bg-[#262626] text-white rounded-xl shadow-lg p-4 md:hidden">
-                        <div className="flex flex-col gap-2"> {/* Reduced gap between mobile buttons */}
+                        <div className="flex flex-col gap-2">
                             {navItems.map((item, index) => (
                                 <button
                                     key={index}
@@ -103,9 +90,14 @@ function Dashboard() {
                                         setSelectedSection(item.key);
                                         setMobileMenuOpen(false);
                                     }}
-                                    className="flex items-center gap-2 px-4 py-3 hover:bg-[#555] rounded-lg text-sm"
+                                    className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-[#555] rounded-lg text-sm"
                                 >
-                                    {item.icon} {item.label}
+                                    <span className="flex items-center gap-3">
+                                        {item.icon} {item.label}
+                                    </span>
+                                    {selectedSection === item.key && (
+                                        <TiArrowRightThick className="text-white ml-2" />
+                                    )}
                                 </button>
                             ))}
                         </div>
@@ -113,7 +105,7 @@ function Dashboard() {
                 )}
 
                 {/* Main Section */}
-                <main className="flex-1 bg-white p-6 overflow-y-auto shadow-lg rounded-md mt-10 mb-10 ml-10 mr-10">
+                <main className="flex-1 bg-white p-6 overflow-y-auto shadow-lg rounded-md mt-10 mb-10 mr-10">
                     <div className="w-full h-full flex items-center justify-center">
                         {selectedSection === "welcome" && (
                             <div className="text-center">
@@ -126,13 +118,11 @@ function Dashboard() {
                             </div>
                         )}
                         {selectedSection === "mapping" && <Mapping />}
-                        {selectedSection === "transform" && (
-                            <Transform
-                                setLoading={setLoading}
-                                setSuccess={setSuccess}
-                                setTransformOutput={setTransformOutput}
-                            />
-                        )}
+                        {selectedSection === "transform" && <Transform
+                            setLoading={setLoading}
+                            setSuccess={setSuccess}
+                            setTransformOutput={setTransformOutput}
+                        />}
                         {selectedSection === "validate" && <ValidateSection />}
                     </div>
                 </main>

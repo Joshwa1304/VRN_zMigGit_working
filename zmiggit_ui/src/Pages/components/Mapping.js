@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 function Mapping() {
   const [mappingData, setMappingData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [rawResponse, setRawResponse] = useState('');
+  const [response, setRawResponse] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {

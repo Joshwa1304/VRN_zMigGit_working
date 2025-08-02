@@ -89,9 +89,9 @@ function TransformSection({ setLoading, setSuccess, setTransformOutput }) {
     <div className="flex flex-col items-center p-8 bg-gray-100 rounded-xl shadow-lg w-full max-w-4xl mx-auto">
       {loadingState ? (
         <>
-          <div className="w-full bg-gray-300 h-4 rounded-full overflow-hidden mb-4">
+          <div className="w-3/4 bg-gray-300 h-4 rounded-full overflow-hidden mb-4">
             <div
-              className="bg-green-600 h-4 transition-all duration-300 ease-linear"
+              className="bg-[#555] h-4 transition-all duration-300 ease-linear"
               style={{ width: `${progress}%` }}
             ></div>
           </div>

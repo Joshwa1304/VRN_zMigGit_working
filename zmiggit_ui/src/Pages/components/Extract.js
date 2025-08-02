@@ -27,7 +27,7 @@ function ExtractSection({ selectedFile, handleFileChange }) {
       {selectedFile && (
         <p className="text-sm text-gray-700 flex items-center gap-1 mt-10">
             <FaFileAlt />
-          {selectedFile.name}
+          <p>file selected successful</p>
         </p>
       )}
     </div>

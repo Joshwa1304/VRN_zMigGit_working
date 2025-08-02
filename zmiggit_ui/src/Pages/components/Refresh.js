@@ -81,9 +81,9 @@ function Refresh({
   return (
     <div className="p-7 items-center">
       {structure && (
-        <div className="mb-6">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        <div>
+          <div className="mb-2">
+            <h3 className="text-lg font-semibold text-gray-800">
               Folder Structure (to be deleted):
             </h3>
             <div className="bg-gray-100 p-4 rounded overflow-auto max-h-64 border border-gray-300">

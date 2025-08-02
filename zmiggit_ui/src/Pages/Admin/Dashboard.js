@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineSlowMotionVideo, MdDeleteSweep } from "react-icons/md";
 import { FaFileUpload, FaDatabase, FaCheckCircle } from "react-icons/fa";
 import { TbArrowsTransferUp } from "react-icons/tb";
 import { VscSymbolMisc } from "react-icons/vsc";
 import { HiMenu } from "react-icons/hi";
+import { TiArrowRightThick } from "react-icons/ti";
+
 import Source from "../components/Source";
 import ExtractSection from "../components/Extract";
 import LoadSection from "../components/Load";
@@ -19,6 +21,7 @@ function Dashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loadedToDB, setLoadedToDB] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // for mobile
+
 
   const handleFileChange = (e) => setSelectedFile(e.target.files[0]);
   const handleLoadToMongo = async () => {
@@ -59,21 +62,29 @@ function Dashboard() {
     { key: "cleanup", label: "Cleanup Transform", icon: <MdDeleteSweep /> },
     { key: "validate", label: "Validate & Report", icon: <FaCheckCircle /> },
   ];
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col font-[Poppins]">
       {/* Header */}
       <header className="bg-[#840227] text-white px-6 py-4 shadow-md relative">
         <h1 className="text-3xl md:text-5xl font-bold text-center">
-          VRN zMigGIT
+          VRX zMigGIT
         </h1>
         <nav className="absolute top-6 right-6 flex gap-4 items-center">
+          <a className="mr-3">{username}</a>
           <ul className="text-sm md:text-base font-semibold">
             <li
               className="hover:text-[#67c02b] cursor-pointer"
               onClick={() => navigate("/logout")}
             >
-              Logout
+             Logout
             </li>
           </ul>
         </nav>
@@ -84,18 +95,21 @@ function Dashboard() {
       </div>
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar for Desktop */}
-        <aside className="m-10 hidden md:block flex-2">
-          <div className="flex flex-col justify-around h-full">
-            {navItems.map((item, index) => (
+        <aside className="m-5 hidden md:flex flex-col items-start justify-center gap-4 flex-2">
+          {navItems.map((item, index) => (
+            <div key={index} className="flex items-center w-64">
               <button
-                key={index}
                 onClick={() => setSelectedSection(item.key)}
-                className="w-full flex items-center gap-3 px-4 py-4 bg-[#262626] hover:bg-[#555] rounded-lg text-white text-sm sm:text-base transition duration-200"
+                className={`w-full flex items-center gap-3 px-2 py-3 bg-[#262626] hover:bg-[#555] rounded-lg text-white ${selectedSection === item.key ? "font-semibold" : ""
+                  }`}
               >
                 {item.icon} {item.label}
               </button>
-            ))}
-          </div>
+              {selectedSection === item.key && (
+                <TiArrowRightThick className="text-green-500 text-5xl" />
+              )}
+            </div>
+          ))}
         </aside>
 
         {/* Sidebar for Mobile */}
@@ -119,7 +133,7 @@ function Dashboard() {
         )}
 
         {/* Main Section */}
-        <main className="flex-1 bg-white p-6 overflow-y-auto shadow-lg rounded-md mt-10 mb-10 ml-10 mr-10">
+        <main className="flex-1 bg-white p-6 overflow-y-auto shadow-lg rounded-md mt-3 mb-b ml-10 mr-10">
           <div className="w-full h-full flex items-center justify-center">
             {selectedSection === "welcome" && (
               <div className="text-center">
