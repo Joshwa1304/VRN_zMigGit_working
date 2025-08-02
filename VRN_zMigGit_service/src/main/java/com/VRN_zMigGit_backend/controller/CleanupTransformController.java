@@ -49,8 +49,9 @@ public class CleanupTransformController {
     }
 
     @GetMapping("/cleanup")
-    public ResponseEntity<String> delFolder() {
-        boolean res = cleanupTransformService.delSubFolder();
+    public ResponseEntity<String> delFolder() throws IOException{
+        File folder = new File(basePath);
+        boolean res = cleanupTransformService.deleteFolder(folder);
         if (res) {
             return ResponseEntity.ok("✅ Contents of the local folder deleted successfully.");
         } else {
