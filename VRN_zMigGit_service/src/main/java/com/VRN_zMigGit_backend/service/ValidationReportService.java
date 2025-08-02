@@ -182,7 +182,7 @@ public class ValidationReportService {
                         Bson filter2 = eq("type", type);
 
                         // === Local Count ===
-                        File ElemFiledir = new File(basePath + "\\" + system + "\\" + subsystem + "\\" + type);
+                        File ElemFiledir = new File(basePath + "\\" + "Sys_" + system + "\\" + "SubSys_"+subsystem + "\\" + type);
                         String[] ElemFile = ElemFiledir.list();
                         LocalElementcount = ElemFile != null ? ElemFile.length : 0;
                         LocalTotal += LocalElementcount;
