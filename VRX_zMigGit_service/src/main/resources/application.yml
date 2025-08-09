@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: VRX_zMigGit
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: VRX_zMigGit
+
+server:
+  port: 9090
+
+custom:
+  base-path: D:\\VRX_zMig_Repo
+  report-path: D:\\Report
+
+  mysql:
+    dbname: dummy6
+    url: jdbc:mysql://localhost:3306/
+    username: root
+    password: 8709
+
+  github:
+    repo-url: https://github.com/Joshwa1304/Test.git  # GitHub URL
+    username: your-github-username                      # GitHub Username
+    token: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx            # GitHub Token
+
+  gitlab:
+    repo-url: https://gitlab.com/joshwa04-group/vrx_test.git  # GitLab URL
+    username: your-gitlab-username     # GitLab Username
+    token: glpat-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx # GitLab Token
+
+  azure:
+    repo-url: https://dev.azure.com/YourOrg/YourProject/_git/YourRepo   # Azure DevOps URL
+    username: your-azure-username                                       # Azure DevOps Username
+    token: azdpat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx                         # Azure DevOps Token

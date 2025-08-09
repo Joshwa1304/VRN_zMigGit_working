@@ -1,0 +1,77 @@
+{"properties": [
+  {
+    "name": "custom.base-path",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.base-path'"
+  },
+  {
+    "name": "custom.report-path",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.report-path'"
+  },
+  {
+    "name": "custom.github.repo-url",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.github.repo-url'"
+  },
+  {
+    "name": "custom.github.username",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.github.username'"
+  },
+  {
+    "name": "custom.github.token",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.github.token'"
+  },
+  {
+    "name": "custom.gitlab.repo-url",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.gitlab.repo-url'"
+  },
+  {
+    "name": "custom.azure.repo-url",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.azure.repo-url'"
+  },
+  {
+    "name": "custom.gitlab.username",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.gitlab.username'"
+  },
+  {
+    "name": "custom.gitlab.token",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.gitlab.token'"
+  },
+  {
+    "name": "custom.azure.username",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.azure.username'"
+  },
+  {
+    "name": "custom.azure.token",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.azure.token'"
+  },
+  {
+    "name": "custom.mysql.dbname",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.mysql.dbname'"
+  },
+  {
+    "name": "custom.mysql.url",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.mysql.url'"
+  },
+  {
+    "name": "custom.mysql.username",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.mysql.username'"
+  },
+  {
+    "name": "custom.mysql.password",
+    "type": "java.lang.String",
+    "description": "A description for 'custom.mysql.password'"
+  }
+]}
